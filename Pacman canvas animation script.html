@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Animation</title>
+		<link rel="stylesheet" href="styles.css">
+		<script src="drawing.js"></script>
+	</head>
+	<body>
+		<h1>Animation</h1>
+	<canvas id="asteroids" width="400" height="400"></canvas>
+	<script>
+		var canvas = document.getElementById("asteroids");
+		var context = canvas.getContext("2d");
+		
+		var x = 200;
+		var y = 200;
+		var radius = 100;
+		var mouth = 0.10 * Math.PI;
+		var dmouth = 0.007 * Math.PI;
+		var speed = 2;
+		
+		function draw() 
+		{
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			context.strokeStyle = "#00FF00";
+			context.fillStyle = "#00FF00";
+			draw_grid(context);
+			context.save();
+			context.strokeStyle = "#000000";
+			context.fillStyle = "#FFFF00";
+			context.lineWidth = 0.5;
+			//context.translate(x, y);
+			draw_pacman(context, x, y, radius, mouth);
+			context.restore();
+		}
+		function update() {
+		if(mouth + dmouth >= (0.10 * Math.PI) || mouth + dmouth <= 0) {
+		dmouth *= -1;
+		}
+		mouth += dmouth;
+		if(x - radius + speed > canvas.width) {
+		x = -radius;
+		}
+		x += speed;
+		}
+		//Callback function to render the next frame
+		var frame = function() {
+		update();
+		draw();
+		}
+		// a really simple (and naive) approach to animation
+		// use setInterval to draw a new frame 60 times per second
+		setInterval(frame, 1000.0/60.0); // 60 fps
+		
+		</script>
+	</body>
+</html>
